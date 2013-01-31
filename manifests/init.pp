@@ -13,10 +13,11 @@
 # Sample Usage:
 #
 class apache (
-  $default_mods = true,
+  $default_mods   = true,
   $service_enable = true,
-  $serveradmin  = 'root@localhost',
-  $sendfile     = false
+  $serveradmin    = 'root@localhost',
+  $sendfile       = false,
+  $conf_source    = 'apache',
 ) {
   include apache::params
 
@@ -52,7 +53,7 @@ class apache (
     # - $serveradmin
     file { "${apache::params::conf_dir}/${apache::params::conf_file}":
       ensure  => present,
-      content => template("apache/${apache::params::conf_file}.erb"),
+      content => template("$conf_source/${apache::params::conf_file}.erb"),
       notify  => Service['httpd'],
       require => Package['httpd'],
     }
